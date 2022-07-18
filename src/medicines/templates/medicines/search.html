@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: #a598ee;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <select name="medicines_keys">
+                {% for key, value in medicines.items %}
+                <option value='{{ key }}'>{{ key }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="search" />
+        </form>
+    </div>
+</body>
+
+</html>
