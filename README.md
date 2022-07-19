@@ -47,3 +47,15 @@ pytest
 by check `http://127.0.0.1:8000/medicines`
 * Second view: contains simple table to list all of the results.
 by check `http://127.0.0.1:8000/medicines/results`
+
+## Run Docker containers
+To run docker containers run the following commands:
+```shell
+docker-compose build
+```
+and then run up command
+```shell
+docker-compose up
+```
+
+then you can access the project on your local by `http://127.0.0.1:8001`

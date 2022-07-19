@@ -34,7 +34,7 @@ if env.bool('READ_ENVFILE', default=True):
     env.read_env(ENV_PATH)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', False)
 
 ALLOWED_HOSTS = ['*']
 
