@@ -15,7 +15,7 @@
 
 <body>
     <div>
-        <form method="post">
+        <form action={% url 'searchResult' %} method="post">
             {% csrf_token %}
             <select name="medicines_keys">
                 {% for key, value in medicines.items %}

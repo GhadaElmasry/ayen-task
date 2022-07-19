@@ -1,0 +1,23 @@
+<html>
+
+<body
+    style='background-color:#a598ee;  display:flex; flex-direction:column; justify-content:center;min-height:100vh; align-items: center;'>
+    <table border="1">
+        <tr>
+            <th> Key</th>
+            <th>Values</th>
+            <th>Matching Precntage</th>
+        </tr>
+        <tr>
+            <th rowspan="3000"> {{ key }}</th>
+        </tr>
+        {% for k, v in results.items %}
+        <tr>
+            <th>{{ v.0 }}</th>
+            <th>{{ v.1 }}</th>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
