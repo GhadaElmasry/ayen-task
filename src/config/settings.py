@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,10 +22,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-=p#um1jv!1@k0)2-5wvdwxw9lw(5x&a=#^j3^idy(+i98dgwcf'
 
+ROOT_DIR = environ.Path(__file__) - 3
+
+APPS_DIR = ROOT_DIR.path('src')
+
+ENV_PATH = str(APPS_DIR.path('.env'))
+
+env = environ.Env()
+
+if env.bool('READ_ENVFILE', default=True):
+    env.read_env(ENV_PATH)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -73,12 +84,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+DATABASE_URL = 'sqlite:///ayendb.db'
+
+POSTGRES_SERVICE = env('POSTGRES_SERVICE', default=None)
+POSTGRES_DB = env('POSTGRES_DB', default=None)
+POSTGRES_USER = env('POSTGRES_USER', default=None)
+POSTGRES_PASSWORD = env('POSTGRES_PASSWORD', default=None)
+
+if POSTGRES_DB and POSTGRES_USER and POSTGRES_PASSWORD and POSTGRES_SERVICE:
+    DATABASE_URL = 'postgres://' + POSTGRES_USER + ':' + POSTGRES_PASSWORD + POSTGRES_SERVICE + POSTGRES_DB
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': env.db('DATABASE_URL', default=DATABASE_URL),
 }
 
 

@@ -1,0 +1,25 @@
+version: '3'
+
+volumes:
+  ayen_task_storage_data: {}
+  ayen_task_db_data: {}
+
+services:
+  ayen_db:
+    image: postgres:latest
+    volumes: 
+      - ayen_task_db_data:/var/lib/postgresql/data
+    
+    env_file: src/.env
+
+  ayen_task:
+    build:
+      context: .
+      dockerfile: ./packaging/Dockerfile
+    volumes:
+      - ayen_task_storage_data:/src/media
+    env_file: src/.env
+    ports:
+      - "8001:8000"
+    depends_on:
+      - ayen_db
