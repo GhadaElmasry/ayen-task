@@ -8,21 +8,13 @@ from django.template import loader
 
 # search_result returns the values, matching precentage and results template 
 def search_result(request):
-    select_value = request.POST.get('medicines_keys', None) # this variable now contains the selected value.
-    data = None
-
-    results ={} 
-    
-    print(f'users key: {select_value}, users value: {data[select_value]}')
-    
-    for k, v in data.items():
-        prec = get_matching_precentage(data[select_value], data[k])
-        if prec > 50 :
-            print(f'match key : {k}, match value: {v}, score: {prec}')
-            results[k]= [v, prec]
+    selected_key = request.POST.get('medicines_keys', None) # this variable now contains the selected value.
+    data = request.session.get("data")
+       
+    results = get_match_values_of_key(selected_key, data)
  
     context = {
-        "key" : select_value,
+        "key" : selected_key,
         "results": results
     }
 
@@ -58,9 +50,27 @@ def read_from_csv_file(path, file_name):
             line_count += 1
 
         print(f'Processed {line_count} lines.')
+        csv_file.close()
 
     return med_dict
 
+
+# get_matching_precentage returns the ratio of text matching 
 def get_matching_precentage(str1, str2):
-    s = SequenceMatcher(None, str1, str2)
-    return s.ratio()*100
+    s = SequenceMatcher(None, str1.lower(), str2.lower())
+    
+    return round(s.ratio()*100, 2)
+
+# get_matched_values_of_key returns the match values of the specfic key
+def get_match_values_of_key(key, data):
+    results ={} 
+
+    if data is None:
+        return results
+    
+    for k, v in data.items():
+        prec = get_matching_precentage(key, v)
+        if prec > 50 :
+            results[k]= [v, prec]
+    
+    return results
