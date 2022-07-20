@@ -59,3 +59,8 @@ docker-compose up
 ```
 
 then you can access the project on your local by `http://127.0.0.1:8001`
+
+
+## Deployment
+
+This project is hosted on Heroku free plan hosting and you access it on https://ayen-medcinies.herokuapp.com/.
